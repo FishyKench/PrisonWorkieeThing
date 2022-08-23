@@ -35,14 +35,14 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+        //rb.MovePosition(rb.position + movement * movementSpeed * Time.fixedDeltaTime);
     }
 
 
     void movePlayer()
     {
-        float _horizontal = Input.GetAxis("Horizontal");
-        float _vertical = Input.GetAxis("Vertical");
+        float _horizontal = Input.GetAxisRaw("Horizontal");
+        float _vertical = Input.GetAxisRaw("Vertical");
 
         Vector3 _movement = new Vector3(_horizontal, 0, _vertical);
         transform.Translate(_movement * movementSpeed * Time.deltaTime, Space.World);
