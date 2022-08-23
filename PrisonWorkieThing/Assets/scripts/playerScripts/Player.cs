@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
     [Header("References")]
     public Rigidbody rb;
     public Vector3 movement;
-    public GameObject _bullet;
-    public Transform _bullesOffSet;
+    //public GameObject _bullet;
+    //public Transform _bullesOffSet;
 
 
 
@@ -27,11 +27,10 @@ public class Player : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         movePlayer();
-        shoot();
+        //shoot();
     }
 
     private void FixedUpdate()
@@ -60,11 +59,11 @@ public class Player : MonoBehaviour
     }
 
 
-    public void shoot()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            Instantiate(_bullet, _bullesOffSet.position, _bullesOffSet.rotation);
-        }
-    }
+    //public void shoot()
+    //{
+    //    if (Input.GetMouseButtonDown(1))
+    //    {
+    //        Instantiate(_bullet, _bullesOffSet.position, _bullesOffSet.localRotation);
+    //    }
+    //}
 }
