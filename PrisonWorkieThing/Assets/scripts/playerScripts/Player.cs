@@ -12,31 +12,23 @@ public class Player : MonoBehaviour
     [Header("References")]
     public Rigidbody rb;
     public Vector3 movement;
-    //public GameObject _bullet;
-    //public Transform _bullesOffSet;
 
 
 
     [Header("Stats")]
     public float _health = 3;
 
-
-
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         movePlayer();
-        //shoot();
     }
 
-    private void FixedUpdate()
-    {
-        //rb.MovePosition(rb.position + movement * movementSpeed * Time.fixedDeltaTime);
-    }
+    //private void FixedUpdate()
+    //{
+    //    //This wasn't being used but i didn't remove it just to be sure not to ruin anything lol
+
+    //    //rb.MovePosition(rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+    //}
 
 
     void movePlayer()
@@ -57,13 +49,4 @@ public class Player : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-
-    //public void shoot()
-    //{
-    //    if (Input.GetMouseButtonDown(1))
-    //    {
-    //        Instantiate(_bullet, _bullesOffSet.position, _bullesOffSet.localRotation);
-    //    }
-    //}
 }
