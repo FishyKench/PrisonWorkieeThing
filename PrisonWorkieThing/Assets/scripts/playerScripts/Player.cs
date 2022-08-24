@@ -6,45 +6,110 @@ public class Player : MonoBehaviour
 {
     [Header("Movement Variables")]
 
-    [SerializeField] public float movementSpeed = 5f;
+    public float movementSpeed = 5f;
+    private Vector3 moveDir;
+
+    [Header("Dashing")]
+
+    //dash
+    public float dashSpeed = 10f;
+    public float maxDashes = 1f;
+    public float dashAmount;
+
+    private float dashLength = .3f;
+
+    public float dashCooldown = 2f;
 
 
-    [Header("References")]
-    public Rigidbody rb;
-    public Vector3 movement;
+    bool isDashing = false;
 
 
 
     [Header("Stats")]
-    public float _health = 3;
+
+    public float health = 3;
+
+
+    [Header("References")]
+
+    private Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        dashAmount = maxDashes;
+    }
 
     void Update()
     {
-        movePlayer();
+        MovementInput();
     }
 
-    //private void FixedUpdate()
-    //{
-    //    //This wasn't being used but i didn't remove it just to be sure not to ruin anything lol
-
-    //    //rb.MovePosition(rb.position + movement * movementSpeed * Time.fixedDeltaTime);
-    //}
-
-
-    void movePlayer()
+    void MovementInput()
     {
-        float _horizontal = Input.GetAxisRaw("Horizontal");
-        float _vertical = Input.GetAxisRaw("Vertical");
+        //movement
+        moveDir.x = Input.GetAxisRaw("Horizontal");
+        moveDir.z = Input.GetAxisRaw("Vertical");
+        moveDir.Normalize();
 
-        Vector3 _movement = new Vector3(_horizontal, 0, _vertical);
-        transform.Translate(_movement * movementSpeed * Time.deltaTime, Space.World);
+        //dash
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashAmount > 0 && (Mathf.Abs(moveDir.x) > 0 || Mathf.Abs(moveDir.z) > 0))
+        {
+
+            if (!isDashing)
+            {
+                StartCoroutine(dash());
+            }
+        }
+    }
+    private void FixedUpdate()
+    {
+        if (!isDashing)
+        {
+            rb.velocity = moveDir * movementSpeed;
+        }
+    }
+
+    IEnumerator dash()
+    {
+        isDashing = true;
+        dashAmount -= 1f;
+        print("SHAD");
+        rb.velocity = moveDir * dashSpeed;
+
+        yield return new WaitForSeconds(dashLength);
+
+        if (dashAmount <= 0)
+        {
+            StartCoroutine(regenDash());
+        }
+        isDashing = false;
+
+    }
+
+    IEnumerator regenDash()
+    {
+        float timer = dashCooldown;
+
+        while (timer > 0)
+        {
+            timer--;
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        dashAmount = maxDashes;
     }
 
     public void Damage()
     {
-        _health -= 1;
+        health -= 1;
 
-        if (_health <= 0)
+        if (health <= 0)
         {
             Destroy(this.gameObject);
         }

@@ -11,14 +11,13 @@ public class shooting : MonoBehaviour
     //bullet speed
     public float bulletForce = 20f;
     // shooting cool down
-    bool canShoot;
+    bool canShoot = true;
     public float shootCoolDown = 1f;
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
-            coolDownStart();
             Shoot();
         }
     }
@@ -26,9 +25,13 @@ public class shooting : MonoBehaviour
     void Shoot()
     {
         //instantiate a bullet and make it a variable so we can alter it
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.AddForce(firePoint.forward * bulletForce, ForceMode.Impulse);
+        if (canShoot)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            rb.AddForce(firePoint.forward * bulletForce, ForceMode.Impulse);
+            coolDownStart();
+        }
     }
 
     public void coolDownStart()
@@ -36,10 +39,19 @@ public class shooting : MonoBehaviour
         StartCoroutine(coolDownCorutine());
     }
 
-     IEnumerator coolDownCorutine()
+    IEnumerator coolDownCorutine()
     {
+        float timer = shootCoolDown;
+
         canShoot = false;
-        yield return new WaitForSeconds(shootCoolDown);
+
+        while (timer > 0)
+        {
+            timer--;
+
+            yield return new WaitForSeconds(1f);
+        }
+
         canShoot = true;
     }
 }
