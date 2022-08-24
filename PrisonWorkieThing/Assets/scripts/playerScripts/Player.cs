@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     [Header("Movement Variables")]
 
-    [SerializeField] public float movementSpeed = 5;
+    [SerializeField] public float movementSpeed = 5f;
 
 
     [Header("References")]
